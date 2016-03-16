@@ -19,6 +19,7 @@
                 }
                 
                 var operator =  module.exports.evaluate(expr.operator, env);
+                return operator(expr.args[0].value, expr.args[1].value);
         }
     };
 
