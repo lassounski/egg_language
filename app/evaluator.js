@@ -3,7 +3,7 @@
 
     var specialForms = require('./specialForms.js');
 
-    module.exports.evaluate = function evaluate(expr, env) {
+    module.exports.evaluate = function(expr, env) {
         switch (expr.type) {
             case 'value':
                 return expr.value;
@@ -17,6 +17,8 @@
                 if (expr.operator.type === 'word' && expr.operator.name in specialForms) {
                     return specialForms[expr.operator.name](expr.args, env);
                 }
+                
+                var operator =  module.exports.evaluate(expr.operator, env);
         }
     };
 

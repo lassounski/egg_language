@@ -46,6 +46,24 @@
             };
             expect(evaluator.evaluate(expr, env)).to.equal(7);
         });
+        
+        it('should add two numbers', function() {
+            var expr = {
+                type: 'apply',
+                operator: {
+                    type: 'word',
+                    name: '+'
+                },
+                args: [
+                    {type: 'value',
+                    value: 7},
+                    {type: 'value',
+                    value: -7}
+                ]
+            };
+            expect(evaluator.evaluate(expr, env)).to.equal(0);
+        });
+
     });
 
 }());
