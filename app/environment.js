@@ -6,7 +6,7 @@
     env['true'] = true;
     env['false'] = false;
     
-    ['+'].forEach(function(operator){
+    ['+','=='].forEach(function(operator){
        env[operator] = new Function('a,b',"return a" + operator + "b"); 
     });
     

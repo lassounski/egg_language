@@ -63,6 +63,23 @@
             };
             expect(evaluator.evaluate(expr, env)).to.equal(0);
         });
+        
+        it('should equal two numbers', function() {
+            var expr = {
+                type: 'apply',
+                operator: {
+                    type: 'word',
+                    name: '=='
+                },
+                args: [
+                    {type: 'value',
+                    value: 7},
+                    {type: 'value',
+                    value: 7}
+                ]
+            };
+            expect(evaluator.evaluate(expr, env)).to.equal(true);
+        });
 
     });
 
