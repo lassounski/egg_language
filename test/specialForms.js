@@ -1,5 +1,5 @@
 var specialForms = require('../app/specialForms.js');
-var env = require('../app/environment.js').export.env;
+var env = require('../app/environment.js');
 var expect = require('chai').expect;
 
 describe('Special forms IF test', function () {

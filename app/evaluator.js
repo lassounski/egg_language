@@ -4,6 +4,7 @@
     var specialForms = require('./specialForms.js');
 
     module.exports.evaluate = function (expr, env) {
+        console.log('Evaluating:'+JSON.stringify(expr));
         switch (expr.type) {
             case 'value':
                 return expr.value;

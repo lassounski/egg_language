@@ -3,7 +3,7 @@
 
     var expect = require('chai').expect;
     var evaluator = require('../app/evaluator.js');
-    var env = require('../app/environment.js').export.env;
+    var env = require('../app/environment.js');
 
     describe('Value evaluation test', function () {
         it('should evaluate a number value to a number', function () {

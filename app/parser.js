@@ -1,5 +1,15 @@
 'use strict';
 
+module.exports = {
+    skipSpace: skipSpace,
+    getNumber: getNumber,
+    getWord: getWord,
+    getString: getString,
+    parseExpression: parseExpression,
+    parseApply: parseApply,
+    parse: parse
+};
+
 function skipSpace(string) {
     var first = string.search(/\S/);
     if (first === -1)
@@ -62,13 +72,3 @@ function parse(program){
         throw new SyntaxError('Unexpected text after program');
     return result.expr;
 }
-
-exports.export = {
-    skipSpace: skipSpace,
-    getNumber: getNumber,
-    getWord: getWord,
-    getString: getString,
-    parseExpression: parseExpression,
-    parseApply: parseApply,
-    parse: parse
-};

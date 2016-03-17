@@ -3,6 +3,8 @@
     
     var env = Object.create(null);
     
+    module.exports = env;
+    
     env['true'] = true;
     env['false'] = false;
     
@@ -10,7 +12,4 @@
        env[operator] = new Function('a,b',"return a" + operator + "b"); 
     });
     
-    exports.export = {
-      env: env  
-    };
 }());

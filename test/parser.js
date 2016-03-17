@@ -1,5 +1,5 @@
 var expect = require('chai').expect;
-var parser = require('../app/parser.js').export;
+var parser = require('../app/parser.js');
 
 describe('Parsing text test', function () {
     it('should remove whitespaces from the beggining of a string', function () {
