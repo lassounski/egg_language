@@ -7,28 +7,28 @@
 
     describe('Value evaluation test', function () {
         it('should evaluate a number value to a number', function () {
-            var expr = {type:'value', value:7};
+            var expr = {type: 'value', value: 7};
             expect(evaluator.evaluate(expr, env)).to.equal(7);
         });
-        
+
         it('should evaluate a string value to a number', function () {
-            var expr = {type:'value', value:'Kirill'};
+            var expr = {type: 'value', value: 'Kirill'};
             expect(evaluator.evaluate(expr, env)).to.equal('Kirill');
         });
-        
+
         it('should return a word from the environment when its there', function () {
-            var expr = {type:'word', name:'true'};
+            var expr = {type: 'word', name: 'true'};
             expect(evaluator.evaluate(expr, env)).to.equal(true);
         });
-        
+
         it('should throw an error when trying to evaluate an expression for a variable that does no exists in the environment', function () {
-            var expr = {type:'word', name: 'inexistable'};
+            var expr = {type: 'word', name: 'inexistable'};
             expect(evaluator.evaluate.bind(evaluator, expr, env)).to.throw(ReferenceError);
-        }); 
+        });
     });
 
-    describe('Applying function test', function() {
-        it('should apply an IF and get the second argument as a result', function() {
+    describe('Applying function test', function () {
+        it('should apply an IF and get the second argument as a result', function () {
             var expr = {
                 type: 'apply',
                 operator: {
@@ -37,17 +37,17 @@
                 },
                 args: [
                     {type: 'value',
-                    value: true},
+                        value: true},
                     {type: 'value',
-                    value: 7},
+                        value: 7},
                     {type: 'value',
-                    value: -7}
+                        value: -7}
                 ]
             };
             expect(evaluator.evaluate(expr, env)).to.equal(7);
         });
-        
-        it('should add two numbers', function() {
+
+        it('should add two numbers', function () {
             var expr = {
                 type: 'apply',
                 operator: {
@@ -56,15 +56,15 @@
                 },
                 args: [
                     {type: 'value',
-                    value: 7},
+                        value: 7},
                     {type: 'value',
-                    value: -7}
+                        value: -7}
                 ]
             };
             expect(evaluator.evaluate(expr, env)).to.equal(0);
         });
-        
-        it('should equal two numbers', function() {
+
+        it('should equal two numbers', function () {
             var expr = {
                 type: 'apply',
                 operator: {
@@ -73,14 +73,64 @@
                 },
                 args: [
                     {type: 'value',
-                    value: 7},
+                        value: 7},
                     {type: 'value',
-                    value: 7}
+                        value: 7}
                 ]
             };
             expect(evaluator.evaluate(expr, env)).to.equal(true);
         });
 
+        it('should subtract two numbers', function () {
+            var expr = {
+                type: 'apply',
+                operator: {
+                    type: 'word',
+                    name: '-'
+                },
+                args: [
+                    {type: 'value',
+                        value: 8},
+                    {type: 'value',
+                        value: 1}
+                ]
+            };
+            expect(evaluator.evaluate(expr, env)).to.equal(7);
+        });
+        
+        it('should divide two numbers', function () {
+            var expr = {
+                type: 'apply',
+                operator: {
+                    type: 'word',
+                    name: '/'
+                },
+                args: [
+                    {type: 'value',
+                        value: 7},
+                    {type: 'value',
+                        value: 7}
+                ]
+            };
+            expect(evaluator.evaluate(expr, env)).to.equal(1);
+        });
+        
+        it('should multiply two numbers', function () {
+            var expr = {
+                type: 'apply',
+                operator: {
+                    type: 'word',
+                    name: '*'
+                },
+                args: [
+                    {type: 'value',
+                        value: 7},
+                    {type: 'value',
+                        value: 1}
+                ]
+            };
+            expect(evaluator.evaluate(expr, env)).to.equal(7);
+        });
     });
 
 }());
