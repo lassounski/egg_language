@@ -131,6 +131,40 @@
             };
             expect(evaluator.evaluate(expr, env)).to.equal(7);
         });
+        
+        it('should compare "greater than" two numbers', function () {
+            var expr = {
+                type: 'apply',
+                operator: {
+                    type: 'word',
+                    name: '>'
+                },
+                args: [
+                    {type: 'value',
+                        value: 7},
+                    {type: 'value',
+                        value: 1}
+                ]
+            };
+            expect(evaluator.evaluate(expr, env)).to.equal(true);
+        });
+        
+        it('should compare "greater than" two numbers', function () {
+            var expr = {
+                type: 'apply',
+                operator: {
+                    type: 'word',
+                    name: '*'
+                },
+                args: [
+                    {type: 'value',
+                        value: 7},
+                    {type: 'value',
+                        value: 1}
+                ]
+            };
+            expect(evaluator.evaluate(expr, env)).to.equal(7);
+        });
     });
 
 }());
