@@ -84,7 +84,7 @@ describe('Special forms DEFINE test', function () {
     });
 
     it('should throw an exception when the first parameter is not a word', function () {
-        expect(specialForms['define'].bind(specialForms,[
+        expect(specialForms['define'].bind(specialForms, [
             {type: 'value', value: 'x'}
             , {type: 'value', value: 7}
         ], env)).to.throw(SyntaxError);
@@ -95,14 +95,53 @@ describe('Special forms DEFINE test', function () {
             {type: 'word', name: 'x'}
             , {type: 'value', value: 7}
         ], env);
-        expect(env).to.have.property('x',7);
-        
+        expect(env).to.have.property('x', 7);
+
         specialForms['define']([
             {type: 'word', name: 'x'}
             , {type: 'value', value: 'delaru rules'}
         ], env);
-        expect(env).to.have.property('x','delaru rules');
+        expect(env).to.have.property('x', 'delaru rules');
     });
+});
 
+describe('Special forms DO test', function () {
+    it('should execute multiple statements', function () {
+        expect(specialForms['do']([
+            {type: 'apply',
+                operator: {
+                    type: 'word',
+                    name: 'define'
+                },
+                args: [
+                    {type: 'word',
+                        name: 'x'},
+                    {type: 'value',
+                        value: 1}
+                ]},
+            {type: 'apply',
+                operator: {
+                    type: 'word',
+                    name: 'define'
+                },
+                args: [
+                    {type: 'word',
+                        name: 'y'},
+                    {type: 'value',
+                        value: 6}
+                ]},
+            {type: 'apply',
+                operator: {
+                    type: 'word',
+                    name: '+'
+                },
+                args: [
+                    {type: 'word',
+                        name: 'y'},
+                    {type: 'word',
+                        name: 'x'}
+                ]}
 
+        ], env)).to.equal(7);
+    });
 });

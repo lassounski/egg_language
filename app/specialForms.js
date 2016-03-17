@@ -35,4 +35,12 @@
             throw new SyntaxError('First argument should be of type word in DEFINE');
     };
 
+    specialForms['do'] = function (args, env) {
+        var value = false;
+        args.forEach(function(arg){
+            value = evaluator.evaluate(arg, env);
+        });
+        return value;
+    };
+
 })();
