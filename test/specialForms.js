@@ -1,4 +1,5 @@
-var specialForms = require('../app/specialForms.js');
+var specialForms = require('../app/specialForms.js').specialForms;
+var getArgumentNames = require('../app/specialForms.js').getArgumentNames;
 var env = require('../app/environment.js');
 var expect = require('chai').expect;
 var main = require('../app/main');
@@ -164,7 +165,7 @@ describe('Special forms PRINT test', function () {
     });
 
     it('should throw an Error if passed an incorrect number of parameters', function () {
-        expect(specialForms['print'].bind(specialForms,[{
+        expect(specialForms['print'].bind(specialForms, [{
                 type: 'value',
                 value: 7
             }, {
@@ -174,7 +175,7 @@ describe('Special forms PRINT test', function () {
     });
 
     it('should throw an Error if passed an incorrect number of parameters', function () {
-        expect(specialForms['print'].bind(specialForms,[{
+        expect(specialForms['print'].bind(specialForms, [{
                 type: 'value',
                 value: 7
             }, {
@@ -184,9 +185,68 @@ describe('Special forms PRINT test', function () {
     });
 
     it('should throw an Error if passed an wrong type of parameter', function () {
-        expect(specialForms['print'].bind(specialForms,[{
+        expect(specialForms['print'].bind(specialForms, [{
                 type: 'delaru',
                 value: 7
             }], env)).to.throw(SyntaxError);
+    });
+});
+
+describe.only('Special forms FUN test', function () {
+    it('should throw an Error if the function does not receive a body', function () {
+        expect(specialForms['fun'].bind(specialForms, [], env)).to.throw(SyntaxError);
+    });
+
+    it('should throw an Error if the arguments for the function are not words', function () {
+        expect(specialForms['fun'].bind(specialForms, [
+            {type: 'delaru', name: 'x'}
+            , {type: 'value', value: 7}
+        ], env)).to.throw(SyntaxError);
+    });
+
+    it('getArgumentNames should return the argument names', function () {
+        expect(getArgumentNames([
+            {type: 'word', name: 'x'}
+            , {type: 'word', name: 'y'}
+        ])).to.include('x', 'y');
+    });
+
+    it('should throw an erro if the number of arguments passed to the function call is different from the number of arguments declared to the function', function () {
+        expect(specialForms['fun'].bind(specialForms,[
+            {type: 'word', name: 'x'}
+            , {type: 'word', name: 'y'},
+            {type: 'apply',
+                operator: {
+                    type: 'word',
+                    name: '+'
+                },
+                args: [
+                    {type: 'word',
+                        name: 'y'},
+                    {type: 'word',
+                        name: 'x'}
+                ]
+            }
+        ], env)(1, 2, 3)).to.throw(TypeError);
+    });
+
+
+    it('should add two numbers as a function', function () {
+        expect(specialForms['fun']([
+            {type: 'word', name: 'x'}
+            , {type: 'word', name: 'y'},
+            {type: 'apply',
+                operator: {
+                    type: 'word',
+                    name: '+'
+                },
+                args: [
+                    {type: 'word',
+                        name: 'y'},
+                    {type: 'word',
+                        name: 'x'}
+                ]
+            }
+        ], env)(1, 6)).to.equal(7);
     });
 });

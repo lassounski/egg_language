@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    var specialForms = require('./specialForms.js');
+    var specialForms = require('./specialForms.js').specialForms;
 
     module.exports.evaluate = function (expr, env) {
         console.log('Evaluating:'+JSON.stringify(expr));

@@ -2,7 +2,11 @@
     'use strict';
 
     var specialForms = Object.create(null);
-    module.exports = specialForms;
+
+    module.exports = {
+        specialForms: specialForms,
+        getArgumentNames: getArgumentNames
+    };
 
     var evaluator = require('./evaluator.js');
 
@@ -57,4 +61,31 @@
         else
             throw new SyntaxError('Wrong type of argument passed to PRINT')
     };
+
+    specialForms['fun'] = function (args, env) {
+        if (!args.length)
+            throw new SyntaxError('Should pass at least one argument to FUN');
+
+        var argumentNames = getArgumentNames(args.splice(0, args.length - 1));
+        var functionBody = args[args.length - 1];
+
+        return function () {
+            if (arguments.length !== argumentNames.length)
+                throw new TypeError('The number of arguments passed to the function differs form its declaration:\n' + 'Expected: ' + argumentNames.length + ' Passed: ' + arguments.length);
+            var localEnv = Object.create(env);
+            
+            for (var index = 0; index < argumentNames.length; index++) {
+                localEnv[argumentNames[index]] = arguments[index];
+            }
+            return evaluator.evaluate(functionBody, localEnv);
+        };
+    };
+
+    function getArgumentNames(args) {
+        return args.map(function (argument) {
+            if (argument.type !== 'word')
+                throw new SyntaxError('The argument to the FUN should be of type word. ' + JSON.stringify(argument));
+            return argument.name;
+        });
+    }
 })();
