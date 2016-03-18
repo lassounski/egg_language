@@ -31,4 +31,16 @@ describe('Main runner test', function () {
         expect(main.run(program, env)).to.equal(1024);
     });
 
+    it('should define an array', function() {
+        var program = [
+            'do(',
+            '   define(',
+            '   vetor,array(1,2,3)',
+            '   ),',
+            '   print(vetor)',
+            ')'
+        ];
+        expect(main.run(program, env)).to.deep.equal([1,2,3]);
+    });
+
 });

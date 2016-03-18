@@ -313,4 +313,18 @@ describe.only('Special forms ARRAY test', function () {
         expect(specialForms['array']([], env)).to.deep.equal([]);
     });
 
+    it('should tell the length of an array', function () {
+        main.run([
+            'do(',
+            '   define(',
+            '   vetor,array(1,2,3)',
+            '   ),',
+            '   print(vetor)',
+            ')'
+        ],env);
+        expect(specialForms['length']([{
+            type: 'word',
+            name: 'vetor'
+        }],env)).to.equal(3);
+    });
 });

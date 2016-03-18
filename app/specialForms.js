@@ -90,6 +90,12 @@
         return elements;
     };
 
+    specialForms['length'] = function(args, env){
+        if(args.length !== 1)
+            throw new SyntaxError('Length should receive only one argument');
+        var array = evaluator.evaluate(args[0],env);
+        return array.length;
+    };
     function getArgumentNames(args) {
         return args.map(function (argument) {
             if (argument.type !== 'word')
