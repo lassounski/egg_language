@@ -7,4 +7,17 @@ describe('Main runner test', function () {
         var program = 'do(define(x,1),define(y,6),+(x,y))';
         expect(main.run([program],env)).to.equal(7);
     });
+    
+    it('should declare a function and call it', function() {
+        var program = [
+            'do(',
+            '   define(sum,',
+            '       fun(x,y,+(x,y))',
+            '   ),',
+            '   print(sum(1,6))',
+            ')'
+        ];
+        expect(main.run(program,env)).to.equal(7);
+    });
+
 });

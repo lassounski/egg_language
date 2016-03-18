@@ -159,9 +159,23 @@ describe('Special forms PRINT test', function () {
     it('should print a variable word type', function () {
         main.run(['define(x,7)'], env);
         expect(specialForms['print']([{
-                type: 'value',
-                value: 7
+                type: 'word',
+                name: 'x'
             }], env)).to.equal(7);
+    });
+
+    it('should print the outcome of a apply function', function () {
+        main.run(['define(x,7)'], env);
+        expect(specialForms['print']([
+            {
+                "type": "apply",
+                "operator": {"type": "word", "name": "+"},
+                "args": [
+                    {"type": "value", "value": 1},
+                    {"type": "value", "value": 6}
+                ]
+            }
+        ], env)).to.equal(7);
     });
 
     it('should throw an Error if passed an incorrect number of parameters', function () {
@@ -192,7 +206,7 @@ describe('Special forms PRINT test', function () {
     });
 });
 
-describe.only('Special forms FUN test', function () {
+describe('Special forms FUN test', function () {
     it('should throw an Error if the function does not receive a body', function () {
         expect(specialForms['fun'].bind(specialForms, [], env)).to.throw(SyntaxError);
     });
@@ -212,7 +226,7 @@ describe.only('Special forms FUN test', function () {
     });
 
     it('should throw an erro if the number of arguments passed to the function call is different from the number of arguments declared to the function', function () {
-        expect(specialForms['fun'].bind(specialForms,[
+        expect(specialForms['fun'].bind(specialForms, [
             {type: 'word', name: 'x'}
             , {type: 'word', name: 'y'},
             {type: 'apply',

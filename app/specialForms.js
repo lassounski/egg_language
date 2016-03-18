@@ -56,7 +56,7 @@
             throw new SyntaxError('Wrong number of arguments to PRINT');
         if (args[0].type === 'word' && env[args[0].name])
             return env[args[0].name];
-        else if (args[0].type === 'value')
+        else if (['value','apply'].indexOf(args[0].type) > -1 )
             return evaluator.evaluate(args[0], env);
         else
             throw new SyntaxError('Wrong type of argument passed to PRINT')
