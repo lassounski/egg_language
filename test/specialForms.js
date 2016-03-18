@@ -1,6 +1,7 @@
 var specialForms = require('../app/specialForms.js');
 var env = require('../app/environment.js');
 var expect = require('chai').expect;
+var main = require('../app/main');
 
 describe('Special forms IF test', function () {
     it('should throw an exception for an invalid number of arguments when calling if', function () {
@@ -143,5 +144,49 @@ describe('Special forms DO test', function () {
                 ]}
 
         ], env)).to.equal(7);
+    });
+});
+
+describe('Special forms PRINT test', function () {
+    it('should print a value type', function () {
+        expect(specialForms['print']([{
+                type: 'value',
+                value: 7
+            }], env)).to.equal(7);
+    });
+
+    it('should print a variable word type', function () {
+        main.run(['define(x,7)'], env);
+        expect(specialForms['print']([{
+                type: 'value',
+                value: 7
+            }], env)).to.equal(7);
+    });
+
+    it('should throw an Error if passed an incorrect number of parameters', function () {
+        expect(specialForms['print'].bind(specialForms,[{
+                type: 'value',
+                value: 7
+            }, {
+                type: 'value',
+                value: 7
+            }], env)).to.throw(SyntaxError);
+    });
+
+    it('should throw an Error if passed an incorrect number of parameters', function () {
+        expect(specialForms['print'].bind(specialForms,[{
+                type: 'value',
+                value: 7
+            }, {
+                type: 'value',
+                value: 7
+            }], env)).to.throw(SyntaxError);
+    });
+
+    it('should throw an Error if passed an wrong type of parameter', function () {
+        expect(specialForms['print'].bind(specialForms,[{
+                type: 'delaru',
+                value: 7
+            }], env)).to.throw(SyntaxError);
     });
 });
