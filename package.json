@@ -1,16 +1,17 @@
 {
-    "name": "Egg",
-    "version": "1.0.0",
-    "keywords": [
-        "programming",
-        "language"
-    ],
-    "scripts": {
-        "test": "mocha -w"
-    },
-    "author": "Kirill \"delaru\" Lassounski",
-    "dependencies": {},
-    "devDependencies": {
-        "chai": "^3.5.0"
-    }
+  "name": "Egg",
+  "version": "1.0.0",
+  "keywords": [
+    "programming",
+    "language"
+  ],
+  "scripts": {
+    "test": "mocha -w"
+  },
+  "author": "Kirill \"delaru\" Lassounski",
+  "dependencies": {},
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^2.4.5"
+  }
 }
