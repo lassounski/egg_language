@@ -81,6 +81,15 @@
         };
     };
 
+    specialForms['array'] = function(args, env){
+        var elements = args.map(function(arg){
+           if(arg.type !== 'value')
+               throw new SyntaxError('An array can accept only numbers');
+           return evaluator.evaluate(arg, env); 
+        });
+        return elements;
+    };
+
     function getArgumentNames(args) {
         return args.map(function (argument) {
             if (argument.type !== 'word')

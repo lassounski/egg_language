@@ -1,3 +1,5 @@
+'use strict';
+
 var specialForms = require('../app/specialForms.js').specialForms;
 var getArgumentNames = require('../app/specialForms.js').getArgumentNames;
 var env = require('../app/environment.js');
@@ -105,6 +107,29 @@ describe('Special forms DEFINE test', function () {
         ], env);
         expect(env).to.have.property('x', 'delaru rules');
     });
+
+    it('should define an array in the environment', function () {
+        specialForms['define']([
+            {type: 'word', name: 'vector'}
+            , {
+                type: 'apply',
+                operator: {
+                    type: 'word',
+                    name: 'array'
+                },
+                args: [
+                    {type: 'value',
+                        value: 1},
+                    {type: 'value',
+                        value: 2},
+                    {type: 'value',
+                        value: 3}
+                ]
+            }
+        ], env);
+        expect(env['vector']).to.deep.equal([1,2,3]);
+    });
+
 });
 
 describe('Special forms DO test', function () {
@@ -263,4 +288,29 @@ describe('Special forms FUN test', function () {
             }
         ], env)(1, 6)).to.equal(7);
     });
+});
+
+describe.only('Special forms ARRAY test', function () {
+    it('should allow the creation of an array', function () {
+        expect(specialForms['array']([
+            {type: 'value',
+                value: 1},
+            {type: 'value',
+                value: 2},
+            {type: 'value',
+                value: 3}
+        ], env)).to.deep.equal([1, 2, 3]);
+    });
+
+    it('should throw an error when an argument is not of type value at the creation of an array', function () {
+        expect(specialForms['array'].bind(specialForms, [
+            {type: 'word',
+                value: 'x'}
+        ], env)).to.throw(SyntaxError);
+    });
+
+    it('should allow the creation of an empty array', function () {
+        expect(specialForms['array']([], env)).to.deep.equal([]);
+    });
+
 });
