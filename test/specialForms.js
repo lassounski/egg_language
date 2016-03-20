@@ -62,15 +62,6 @@ describe('Special forms WHILE test', function () {
         ], env))
                 .to.equal(false);
     });
-
-    it.skip('should return a value for a true expression', function () {
-        expect(specialForms['while']([
-            {type: 'value', value: true}
-            , {type: 'value', value: 7}
-        ], env))
-                .to.equal(7);
-    });
-
 });
 
 describe('Special forms DEFINE test', function () {
