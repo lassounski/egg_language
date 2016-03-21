@@ -318,4 +318,13 @@ describe.only('Special forms ARRAY test', function () {
             name: 'vetor'
         }],env)).to.equal(3);
     });
+    
+    it('should throw an error when the number of parameters to length differ from one', function () {
+        expect(specialForms['array'].bind(specialForms, [
+            {type: 'word',
+                value: 'x'},
+            {type: 'word',
+                value: 'y'}
+        ], env)).to.throw(SyntaxError);
+    });
 });
