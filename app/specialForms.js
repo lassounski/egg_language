@@ -92,9 +92,20 @@
 
     specialForms['length'] = function(args, env){
         if(args.length !== 1)
-            throw new SyntaxError('Length should receive only one argument');
+            throw new SyntaxError('LENGTH should receive only one argument');
         var array = evaluator.evaluate(args[0],env);
         return array.length;
+    };
+    
+    specialForms['element'] = function(args, env){
+        if(args.length !== 2)
+            throw new SyntaxError('ELEMENT should receive only two arguments');
+        if(args[0].type !== 'word')
+            throw new TypeError('The first argument to ELEMENT should be of type word');
+        var array = evaluator.evaluate(args[0], env);
+        var position = evaluator.evaluate(args[1], env);
+        
+        return array[position];
     };
     
     function getArgumentNames(args) {
