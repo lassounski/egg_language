@@ -118,7 +118,7 @@ describe('Special forms DEFINE test', function () {
                 ]
             }
         ], env);
-        expect(env['vector']).to.deep.equal([1,2,3]);
+        expect(env['vector']).to.deep.equal([1, 2, 3]);
     });
 
 });
@@ -281,7 +281,7 @@ describe('Special forms FUN test', function () {
     });
 });
 
-describe.only('Special forms ARRAY test', function () {
+describe('Special forms ARRAY test', function () {
     it('should allow the creation of an array', function () {
         expect(specialForms['array']([
             {type: 'value',
@@ -299,6 +299,9 @@ describe.only('Special forms ARRAY test', function () {
                 value: 'x'}
         ], env)).to.throw(SyntaxError);
     });
+});
+
+describe('Special forms LENGTH test', function () {
 
     it('should allow the creation of an empty array', function () {
         expect(specialForms['array']([], env)).to.deep.equal([]);
@@ -312,19 +315,78 @@ describe.only('Special forms ARRAY test', function () {
             '   ),',
             '   print(vetor)',
             ')'
-        ],env);
+        ], env);
         expect(specialForms['length']([{
-            type: 'word',
-            name: 'vetor'
-        }],env)).to.equal(3);
-    });
-    
-    it('should throw an error when the number of parameters to length differ from one', function () {
-        expect(specialForms['array'].bind(specialForms, [
-            {type: 'word',
-                value: 'x'},
-            {type: 'word',
-                value: 'y'}
-        ], env)).to.throw(SyntaxError);
+                type: 'word',
+                name: 'vetor'
+            }], env)).to.equal(3);
     });
 });
+
+describe('Special forms ELEMENT test', function () {
+    it('shold throw an exception when passed the wrong number or arguments', function () {
+        expect(specialForms['element'].bind(specialForms, [
+            {type: 'word',
+                value: 'x'}
+        ], env)).to.throw(SyntaxError);
+    });
+
+    it('should return the second element of an array', function () {
+        main.run([
+            'do(',
+            '   define(',
+            '   vetor,array(1,2,3)',
+            '   ),',
+            '   print(vetor)',
+            ')'
+        ], env);
+        expect(specialForms['element'](
+                [
+                    {
+                        type: 'word',
+                        name: 'vetor'
+                    }, {
+                        type: 'value',
+                        value: 1
+                    }
+                ], env)).to.equal(2);
+    });
+
+    it('should throw an error when the type of the first argument is not a word', function () {
+        expect(specialForms['element'].bind(specialForms,
+                [
+                    {
+                        type: 'value',
+                        value: 'x'
+                    }, {
+                        type: 'value',
+                        value: 1
+                    }
+                ], env)).to.throw(TypeError);
+    });
+
+    it('should accept the second parameter as a word', function () {
+        main.run([
+            'do(',
+            '   define(',
+            '   vetor,array(1,2,3)',
+            '   ),',
+            '   define(',
+            '   position, 2',
+            '   )',
+            ')'
+        ], env);
+        expect(specialForms['element'](
+                [
+                    {
+                        type: 'word',
+                        name: 'vetor'
+                    }, {
+                        type: 'word',
+                        name: 'position'
+                    }
+                ], env)).to.equal(3);
+    });
+
+});
+

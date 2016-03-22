@@ -22,10 +22,15 @@
     };
 
     specialForms["while"] = function (args, env) {
+        var index = 0;
+        
         if (args.length !== 2)
             throw new SyntaxError('Wrong number of arguments to WHILE');
-        while (evaluator.evaluate(args[0], env) === true)
+        while (evaluator.evaluate(args[0], env) === true) {
+            console.log('WHILE index:'+index++)
             return evaluator.evaluate(args[1], env);
+        }
+        console.log('WHILE finished');
         return false;
     };
 
@@ -44,7 +49,7 @@
 
     specialForms['do'] = function (args, env) {
         var value = false;
-        console.log('Do:' + args);
+        console.log('Do:' + JSON.stringify(args));
         args.forEach(function (arg) {
             value = evaluator.evaluate(arg, env);
         });
@@ -56,7 +61,7 @@
             throw new SyntaxError('Wrong number of arguments to PRINT');
         if (args[0].type === 'word' && env[args[0].name])
             return env[args[0].name];
-        else if (['value','apply'].indexOf(args[0].type) > -1 )
+        else if (['value', 'apply'].indexOf(args[0].type) > -1)
             return evaluator.evaluate(args[0], env);
         else
             throw new SyntaxError('Wrong type of argument passed to PRINT')
@@ -73,7 +78,7 @@
             if (arguments.length !== argumentNames.length)
                 throw new TypeError('The number of arguments passed to the function differs form its declaration:\n' + 'Expected: ' + argumentNames.length + ' Passed: ' + arguments.length);
             var localEnv = Object.create(env);
-            
+
             for (var index = 0; index < argumentNames.length; index++) {
                 localEnv[argumentNames[index]] = arguments[index];
             }
@@ -81,22 +86,34 @@
         };
     };
 
-    specialForms['array'] = function(args, env){
-        var elements = args.map(function(arg){
-           if(arg.type !== 'value')
-               throw new SyntaxError('An array can accept only numbers');
-           return evaluator.evaluate(arg, env); 
+    specialForms['array'] = function (args, env) {
+        var elements = args.map(function (arg) {
+            if (arg.type !== 'value')
+                throw new SyntaxError('An array can accept only numbers');
+            return evaluator.evaluate(arg, env);
         });
         return elements;
     };
 
-    specialForms['length'] = function(args, env){
-        if(args.length !== 1)
-            throw new SyntaxError('Length should receive only one argument');
-        var array = evaluator.evaluate(args[0],env);
+    specialForms['length'] = function (args, env) {
+        if (args.length !== 1)
+            throw new SyntaxError('LENGTH should receive only one argument');
+        var array = evaluator.evaluate(args[0], env);
+        console.log('array '+ args[0].name +' LENGTH:'+array.length);
         return array.length;
     };
-    
+
+    specialForms['element'] = function (args, env) {
+        if (args.length !== 2)
+            throw new SyntaxError('ELEMENT should receive only two arguments');
+        if (args[0].type !== 'word')
+            throw new TypeError('The first argument to ELEMENT should be of type word');
+        var array = evaluator.evaluate(args[0], env);
+        var position = evaluator.evaluate(args[1], env);
+
+        return array[position];
+    };
+
     function getArgumentNames(args) {
         return args.map(function (argument) {
             if (argument.type !== 'word')
