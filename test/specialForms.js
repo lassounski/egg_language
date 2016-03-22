@@ -323,7 +323,7 @@ describe('Special forms LENGTH test', function () {
     });
 });
 
-describe.only('Special forms ELEMENT test', function () {
+describe('Special forms ELEMENT test', function () {
     it('shold throw an exception when passed the wrong number or arguments', function () {
         expect(specialForms['element'].bind(specialForms, [
             {type: 'word',

@@ -56,7 +56,7 @@ describe('Main runner test', function () {
         expect(main.run(program, env)).to.equal(1024);
     });
 
-    it('should define an array', function() {
+    it('should define an array', function () {
         var program = [
             'do(',
             '   define(',
@@ -65,6 +65,34 @@ describe('Main runner test', function () {
             '   print(vetor)',
             ')'
         ];
-        expect(main.run(program, env)).to.deep.equal([1,2,3]);
+        expect(main.run(program, env)).to.deep.equal([1, 2, 3]);
     });
+
+    it.only('should run a program with several array operations', function () {
+        var program = [
+            'do(',
+            '   define(i,0),',
+            '   define(sum,0),',
+            '   define(vetor, array(1,2,3)),',
+            '   while(<(i, length(vetor)),',
+            '       do(',
+            '       define(sum, +(sum, element(vetor, i))),',
+            '       define(i, +(i, 1)),',
+            '       )',
+            '   )',
+            ')'
+        ];
+//        var program = [
+//            "do(define(sumFunc, fun(array,",
+//            "     do(define(i, 0),",
+//            "        define(sum, 0),",
+//            "        while(<(i, length(array)),",
+//            "          do(define(sum, +(sum, element(array, i))),",
+//            "             define(i, +(i, 1)))),",
+//            "        sum))),",
+//            "   print(sumFunc(array(1, 2, 3))))"
+//        ];
+        expect(main.run(program, env)).to.deep.equal(6);
+    });
+
 });
