@@ -104,4 +104,20 @@ describe('Main runner test', function () {
         expect(main.run(program, env)).to.deep.equal(6);
     });
 
+    it('should execute a closure function', function() {
+        program = [
+            "do(",
+            "     define(f,",
+            "       fun(a,",
+            "           fun(b,",
+            "               +(a,b)",
+            "           )",
+            "       )",
+            "     ),",
+            "     print(f(1)(6))",
+            ")"
+        ];        
+        expect(main.run(program, env)).to.deep.equal(7);
+    });
+
 });

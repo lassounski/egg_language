@@ -64,7 +64,7 @@
         else if (['value', 'apply'].indexOf(args[0].type) > -1)
             return evaluator.evaluate(args[0], env);
         else
-            throw new SyntaxError('Wrong type of argument passed to PRINT')
+            throw new SyntaxError('Wrong type of argument passed to PRINT');
     };
 
     specialForms['fun'] = function (args, env) {
