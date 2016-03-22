@@ -12,17 +12,23 @@ describe('Main runner test', function () {
         expect(main.run(program)).to.equal(7);
     });
 
-    it.skip('should count a number in a while loop', function () {
+    it('should count a number in a while loop', function () {
         var program = [
-            'do(define(counter,1),',
+            'do(',
+            '   define(counter,1),',
             '   define(return,1),',
-            '   while(<(counter,6),',
-            '       do(define(counter,+(counter,1)))),',
-            '   print(counter))'];
-        expect(main.run(program)).to.equal(7);
+            '   while(',
+            '       <(counter,6),',
+            '       do(',
+            '           define(counter,+(counter,1))',
+            '       ),',
+            '    ),',
+            '   print(counter)',
+            ')'];
+        expect(main.run(program)).to.equal(6);
     });
 
-    it.skip('should count another number in a while loop', function () {
+    it('should count another number in a while loop', function () {
         var program = [
             "do(define(total, 0),",
             "   define(count, 1),",
@@ -68,7 +74,7 @@ describe('Main runner test', function () {
         expect(main.run(program, env)).to.deep.equal([1, 2, 3]);
     });
 
-    it.only('should run a program with several array operations', function () {
+    it('should run a program with several array operations', function () {
         var program = [
             'do(',
             '   define(i,0),',
@@ -79,19 +85,22 @@ describe('Main runner test', function () {
             '       define(sum, +(sum, element(vetor, i))),',
             '       define(i, +(i, 1)),',
             '       )',
-            '   )',
+            '   ),',
+            '   print(sum)',
             ')'
         ];
-//        var program = [
-//            "do(define(sumFunc, fun(array,",
-//            "     do(define(i, 0),",
-//            "        define(sum, 0),",
-//            "        while(<(i, length(array)),",
-//            "          do(define(sum, +(sum, element(array, i))),",
-//            "             define(i, +(i, 1)))),",
-//            "        sum))),",
-//            "   print(sumFunc(array(1, 2, 3))))"
-//        ];
+        expect(main.run(program, env)).to.deep.equal(6);
+                
+        program = [
+            "do(define(sumFunc, fun(array,",
+            "     do(define(i, 0),",
+            "        define(sum, 0),",
+            "        while(<(i, length(array)),",
+            "          do(define(sum, +(sum, element(array, i))),",
+            "             define(i, +(i, 1)))),",
+            "        sum))),",
+            "   print(sumFunc(array(1, 2, 3))))"
+        ];        
         expect(main.run(program, env)).to.deep.equal(6);
     });
 

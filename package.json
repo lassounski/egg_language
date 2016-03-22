@@ -6,7 +6,8 @@
     "language"
   ],
   "scripts": {
-    "test": "mocha -w"
+    "test": "mocha -w",
+    "browserify": "browserify app/index.js -o app/bundle.js"
   },
   "author": "Kirill \"delaru\" Lassounski",
   "dependencies": {},

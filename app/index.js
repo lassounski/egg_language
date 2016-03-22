@@ -13,7 +13,8 @@
         '       define(sum, +(sum, element(vetor, i))),',
         '       define(i, +(i, 1)),',
         '       )',
-        '   )',
+        '   ),',
+        '   print(sum)',
         ')'
     ];
 

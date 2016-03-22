@@ -27,8 +27,8 @@
         if (args.length !== 2)
             throw new SyntaxError('Wrong number of arguments to WHILE');
         while (evaluator.evaluate(args[0], env) === true) {
-            console.log('WHILE index:'+index++)
-            return evaluator.evaluate(args[1], env);
+            console.log('WHILE index:'+index++);
+            evaluator.evaluate(args[1], env);
         }
         console.log('WHILE finished');
         return false;
