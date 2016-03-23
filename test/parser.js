@@ -3,7 +3,7 @@ var parser = require('../app/parser.js');
 
 describe('Parsing text test', function () {
     it('should remove whitespaces from the beggining of a string', function () {
-        var result = parser.skipSpace('   Hey there man! Cool!  ');
+        var result = parser.skipSpaceAndComments('   Hey there man! Cool!  ');
         expect(result).to.be.equal('Hey there man! Cool!  ');
     });
 
@@ -39,6 +39,12 @@ describe('Parsing text test', function () {
         result = parser.getNumber("123");
         expect(result[0]).to.be.equal("123");
     });
+    
+    it('should ignore a line with a #', function() {
+        var result = parser.skipSpaceAndComments('   # hello\n x');
+        expect(result).to.equal('x');
+    });
+
 });
 
 describe('Parse expression test', function () {

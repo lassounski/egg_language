@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = {
-    skipSpace: skipSpace,
+    skipSpaceAndComments: skipSpaceAndComments,
     getNumber: getNumber,
     getWord: getWord,
     getString: getString,
@@ -10,11 +10,9 @@ module.exports = {
     parse: parse
 };
 
-function skipSpace(string) {
-    var first = string.search(/\S/);
-    if (first === -1)
-        return "";
-    return string.slice(first);
+function skipSpaceAndComments(string) {
+    var noComments = string.replace(/\s*#.*\n/,"");
+    return noComments.replace(/\s*/,"");
 }
 
 function getString(text) {
@@ -30,7 +28,7 @@ function getWord(text) {
 }
 
 function parseExpression(program) {
-    program = skipSpace(program);
+    program = skipSpaceAndComments(program);
     var match, expr;
 
     if (match = getString(program))
@@ -47,19 +45,19 @@ function parseExpression(program) {
 }
 
 function parseApply(expr, program) {
-    program = skipSpace(program);
+    program = skipSpaceAndComments(program);
     if (program[0] !== "(")
         return {expr: expr, rest: program};
     
-    program = skipSpace(program.slice(1));
+    program = skipSpaceAndComments(program.slice(1));
     expr = {type: 'apply', operator: expr, args: []};
     while(program[0] !== ')'){
         var arg = parseExpression(program);
 
         expr.args.push(arg.expr);
-        program = skipSpace(arg.rest);
+        program = skipSpaceAndComments(arg.rest);
         if(program[0] === ',')
-            program = skipSpace(program.slice(1));
+            program = skipSpaceAndComments(program.slice(1));
         else if(program[0] !== ')')
             throw new SyntaxError("Expected ',' or ')'");
     }
@@ -68,7 +66,7 @@ function parseApply(expr, program) {
 
 function parse(program){
     var result = parseExpression(program);
-    if(skipSpace(result.rest).length > 0)
+    if(skipSpaceAndComments(result.rest).length > 0)
         throw new SyntaxError('Unexpected text after program');
     return result.expr;
 }
