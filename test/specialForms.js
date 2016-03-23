@@ -390,3 +390,50 @@ describe('Special forms ELEMENT test', function () {
 
 });
 
+describe.only('Special forms SET test', function () {
+    it('should throw a SyntaxError with wrong number of argumnts', function () {
+        expect(specialForms['set'].bind(specialForms,
+                [
+                    {
+                        type: 'word',
+                        name: 'x'
+                    }
+                ], env)).to.throw(SyntaxError);
+
+        expect(specialForms['set'].bind(specialForms,
+                [
+                    {
+                        type: 'word',
+                        name: 'x'
+                    }, {
+                        type: 'word',
+                        name: 'x'
+                    }, {
+                        type: 'word',
+                        name: 'x'
+                    }
+                ], env)).to.throw(SyntaxError);
+    });
+
+    it('should throw a ReferenceError when trying to set an variable that does not exists in the outer scope', function () {
+        var x = ['set(x,1)'];
+
+        expect(main.run.bind(main, x)).to.throw(ReferenceError);
+
+        main.run([
+            'define(x,1)'
+        ], env);
+
+        expect(specialForms['set'].bind(specialForms, x, env)).not.to.throw(ReferenceError);
+    });
+
+    it('should create a variable in an inner scope', function () {
+        expect(main.run([
+            "do(define(x, 4),",
+            "   define(setx, fun(val, set(x, val))),",
+            "   setx(50),",
+            "   print(x))"
+        ], env)).to.equal(50);
+    });
+
+});

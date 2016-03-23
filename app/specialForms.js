@@ -23,11 +23,11 @@
 
     specialForms["while"] = function (args, env) {
         var index = 0;
-        
+
         if (args.length !== 2)
             throw new SyntaxError('Wrong number of arguments to WHILE');
         while (evaluator.evaluate(args[0], env) === true) {
-            console.log('WHILE index:'+index++);
+            console.log('WHILE index:' + index++);
             evaluator.evaluate(args[1], env);
         }
         console.log('WHILE finished');
@@ -45,6 +45,24 @@
             console.log('Environment is:' + JSON.stringify(env));
         } else
             throw new SyntaxError('First argument should be of type word in DEFINE');
+    };
+
+    specialForms['set'] = function (args, env) {
+        if (args.length !== 2)
+            throw new SyntaxError('Wrong number of arguments in SET');
+
+        var fatherScope = env;
+        do {
+            if (Object.prototype.hasOwnProperty.call(fatherScope, args[0].name)) {
+                break;
+            }
+            fatherScope = Object.getPrototypeOf(fatherScope);
+        } while (fatherScope !== null);
+
+        if (fatherScope === null)
+            throw new ReferenceError('The variable ' + args[0].name + 'is not in the outer scope');
+        else
+            fatherScope[args[0].name] = evaluator.evaluate(args[1], env);
     };
 
     specialForms['do'] = function (args, env) {
@@ -99,7 +117,7 @@
         if (args.length !== 1)
             throw new SyntaxError('LENGTH should receive only one argument');
         var array = evaluator.evaluate(args[0], env);
-        console.log('array '+ args[0].name +' LENGTH:'+array.length);
+        console.log('array ' + args[0].name + ' LENGTH:' + array.length);
         return array.length;
     };
 
